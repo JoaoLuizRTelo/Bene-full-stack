@@ -48,6 +48,7 @@ npm run lint
 # tudo de uma vez, na raiz
 ./start.sh       |  .\start.ps1      # PowerShell
 ./stop.sh        |  .\stop.ps1
+iniciar.bat      |  parar.bat        # Windows, duplo clique
 ```
 
 ## Convenções

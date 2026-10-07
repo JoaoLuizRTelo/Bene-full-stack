@@ -97,11 +97,21 @@ cadastro público sempre cria usuários comuns.
 
 ### 5. Subir a aplicação
 
+**Com duplo clique (Windows):**
+
+Abra **`iniciar.bat`**. Ele confere o Docker (e abre o Docker Desktop se estiver
+fechado), sobe o banco, o backend e o frontend, e abre o navegador. Para derrubar,
+abra **`parar.bat`**.
+
+Rodar o `iniciar.bat` com o sistema já no ar é inofensivo: ele detecta o que já está
+nas portas 3000 e 5173 e mantém, em vez de colidir com `EADDRINUSE`.
+
 **Com um comando:**
 
 ```bash
-./start.sh            # Linux, WSL e macOS
-.\start.ps1           # Windows, PowerShell
+./start.sh                      # Linux, WSL e macOS
+.\start.ps1                     # Windows, PowerShell
+.\start.ps1 -SemNavegador       # idem, sem abrir o navegador
 ```
 
 **Ou em dois terminais, manualmente:**
@@ -118,6 +128,7 @@ Para derrubar:
 ```bash
 ./stop.sh  --banco     # Linux, WSL e macOS (--banco também para o PostgreSQL)
 .\stop.ps1 -Banco      # Windows, PowerShell
+parar.bat              # Windows, duplo clique (mantém o banco de pé)
 ```
 
 ### 6. Ligar a transcrição real (opcional)
