@@ -1,0 +1,14 @@
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import type { Request } from 'express';
+import { AuthenticatedUser } from '../interfaces/authenticated-user.interface';
+
+/**
+ * Entrega ao controlador o usuario descrito pelo token ja validado pela guarda.
+ * Uso: metodo(@CurrentUser() user: AuthenticatedUser)
+ */
+export const CurrentUser = createParamDecorator(
+  (_data: unknown, ctx: ExecutionContext): AuthenticatedUser => {
+    const request = ctx.switchToHttp().getRequest<Request & { user: AuthenticatedUser }>();
+    return request.user;
+  },
+);
