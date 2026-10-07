@@ -48,7 +48,10 @@ serviço externo.
 ### 2.1 O caminho `/api`
 
 O navegador só conhece a porta 5173. Toda chamada à API é feita ao **caminho relativo**
-`/api/...`, e o proxy de desenvolvimento do Vite a repassa para `http://localhost:3000`.
+`/api/...`, e o proxy de desenvolvimento do Vite a repassa para `http://127.0.0.1:3000`.
+(O alvo e o endereco IPv4, e nao `localhost`: no Windows o Node resolve `localhost`
+para `::1` primeiro, e o backend escuta em `127.0.0.1` — com `localhost` o proxy falha
+com `ECONNREFUSED ::1:3000`.)
 
 Isso tem duas consequências que a especificação exige:
 
@@ -333,9 +336,9 @@ O envio de um áudio atravessa todas as camadas e serve de exemplo para as demai
 
 | # | Onde | O que acontece |
 |---|---|---|
-| 1 | `pages/TranscribePage.tsx` | O usuário escolhe o arquivo e clica em **Transcrever** |
+| 1 | `pages/TranscreverPage.tsx` | O usuário escolhe o arquivo e clica em **Transcrever** |
 | 2 | `services/api.ts` | O axios monta um `multipart/form-data` e o interceptador acrescenta `Authorization: Bearer <token>` |
-| 3 | Vite | O proxy repassa `POST /api/transcriptions` para `http://localhost:3000` |
+| 3 | Vite | O proxy repassa `POST /api/transcriptions` para `http://127.0.0.1:3000` |
 | 4 | `JwtAuthGuard` | O NestJS valida o token; se inválido ou ausente, responde **401** e a requisição termina aqui |
 | 5 | `transcriptions.controller.ts` | O controlador recebe o arquivo, o multer aplica o limite de tamanho (**413**) e o filtro de tipo (**400**), e chama o serviço |
 | 6 | `transcriptions.service.ts` | O serviço envia o áudio ao provedor com a chave lida do `.env` e recebe o texto; falha do provedor vira **502** |
@@ -353,10 +356,10 @@ O envio de um áudio atravessa todas as camadas e serve de exemplo para as demai
 | `/cadastrar` | Cadastro | público | Nome, e-mail, senha e confirmação; erro em 409 aponta o campo de e-mail |
 | `/app` | Área interna | autenticado | Envio de áudio e histórico pessoal paginado |
 | `/app/transcricoes/:id` | Detalhe | dono | Texto completo, metadados, copiar e excluir |
-| `/app/admin` | Contas | **admin** | Lista de contas com busca, promover/rebaixar, ativar/desativar, excluir |
+| `/app/contas` | Contas | **admin** | Lista de contas com busca, promover/rebaixar, ativar/desativar, excluir |
 
-`ProtectedRoute` barra `/app` sem sessão e redireciona a `/entrar`. `AdminRoute` barra
-`/app/admin` sem `role === 'admin'`. A tela de envio informa os formatos e o limite de
+`RotaProtegida` barra `/app` sem sessão e redireciona a `/entrar`. `RotaAdmin` barra
+`/app/contas` sem `role === 'admin'`. A tela de envio informa os formatos e o limite de
 tamanho **antes** do clique, e traduz os status em mensagens legíveis:
 
 | Status | Mensagem na tela |
@@ -433,7 +436,7 @@ comando é um fato.
 | 5 | `GroqTranscriptionProvider` | Com `TRANSCRIPTION_PROVIDER=groq` e chave inválida, **502**; com chave válida, o áudio de teste volta transcrito |
 | 6 | Frontend base: Vite, Tailwind v4, rotas, axios com os dois interceptadores, Zustand, TanStack Query, landing, login, cadastro | `localhost:5173` abre a landing; cadastro e login funcionam; recarregar a página mantém a sessão; `/app` sem sessão redireciona a `/entrar`; a aba Rede não mostra nenhuma chamada a `localhost:3000` |
 | 7 | Área interna: envio de áudio, histórico paginado, detalhe, exclusão | Enviar um áudio exibe o texto e o histórico se atualiza sem recarregar; excluir remove da lista; um 401 leva a `/entrar` |
-| 8 | Área de administrador | O administrador lista e altera contas; usuário comum em `/app/admin` é barrado pela tela **e** recebe **403** da API |
+| 8 | Área de administrador | O administrador lista e altera contas; usuário comum em `/app/contas` é barrado pela tela **e** recebe **403** da API |
 | 9 | `start`/`stop` (`.sh` e `.ps1`), `README.md` com a declaração de uso de IA, revisão crítica final | `npm run build` e `npm run lint` passam nos dois projetos; a aplicação sobe do zero seguindo só o README; os comandos da seção 11 todos conferem |
 
 ---
