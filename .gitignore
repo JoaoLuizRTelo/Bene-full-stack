@@ -1,0 +1,32 @@
+# Dependências
+node_modules/
+
+# Build
+dist/
+build/
+*.tsbuildinfo
+
+# Configuração com segredos — só o .env.example é versionado
+.env
+.env.local
+.env.*.local
+
+# Logs e PIDs dos scripts start/stop
+*.log
+logs/
+*.pid
+.pids/
+
+# Áudios de teste (ficam fora do repositório, seção 1.3)
+audios-teste/
+
+# Sistema operacional
+.DS_Store
+Thumbs.db
+
+# Editores
+.vscode/
+.idea/
+
+# Entrega
+entrega.zip

@@ -1,0 +1,24 @@
+# PostgreSQL de desenvolvimento (Aula 07, seção 4.3).
+# A porta é publicada apenas para 127.0.0.1: sem o endereço na frente, o Docker
+# publicaria em 0.0.0.0 e o banco aceitaria conexões de qualquer máquina da rede.
+services:
+  db:
+    image: postgres:17-alpine
+    container_name: ditado-db
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ditado
+      POSTGRES_PASSWORD: ditado
+      POSTGRES_DB: ditado
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ditado -d ditado"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  dados:
