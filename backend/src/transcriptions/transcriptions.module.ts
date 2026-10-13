@@ -8,7 +8,11 @@ import { Transcription } from './entities/transcription.entity';
 import { GroqTranscriptionProvider } from './providers/groq-transcription.provider';
 import { MockTranscriptionProvider } from './providers/mock-transcription.provider';
 import { TranscriptionProvider } from './providers/transcription-provider';
-import { EXTENSOES_ACEITAS, MIME_TYPES_ACEITOS } from './transcriptions.constants';
+import {
+  EXTENSOES_ACEITAS,
+  MIME_TYPES_ACEITOS,
+  MIME_TYPES_AMBIGUOS,
+} from './transcriptions.constants';
 import { TranscriptionsController } from './transcriptions.controller';
 import { TranscriptionsService } from './transcriptions.service';
 
@@ -26,18 +30,25 @@ import { TranscriptionsService } from './transcriptions.service';
           fileSize: (config.get<number>('MAX_UPLOAD_MB') ?? 25) * 1024 * 1024,
           files: 1,
         },
+        // Primeira peneira, pelo cabecalho que o cliente declara: barra o que
+        // se anuncia como outra coisa (text/plain, application/pdf) antes de
+        // ler o corpo. Quem passa aqui ainda sera conferido pela assinatura
+        // dos bytes, no servico - o cabecalho e escolhido por quem envia.
         fileFilter: (
           _req: unknown,
           file: Express.Multer.File,
           callback: (error: Error | null, accept: boolean) => void,
         ) => {
-          const aceito = (MIME_TYPES_ACEITOS as readonly string[]).includes(file.mimetype);
+          const declarado = file.mimetype ?? '';
+          const aceito =
+            (MIME_TYPES_ACEITOS as readonly string[]).includes(declarado) ||
+            (MIME_TYPES_AMBIGUOS as readonly string[]).includes(declarado);
 
           callback(
             aceito
               ? null
               : new BadRequestException(
-                  `Esse arquivo nao parece ser um audio (${file.mimetype}). Formatos aceitos: ${EXTENSOES_ACEITAS}.`,
+                  `Esse arquivo nao parece ser um audio (${declarado}). Formatos aceitos: ${EXTENSOES_ACEITAS}.`,
                 ),
             aceito,
           );

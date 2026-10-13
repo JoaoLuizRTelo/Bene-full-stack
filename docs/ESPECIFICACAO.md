@@ -232,6 +232,18 @@ Tipos aceitos, os mesmos que a Groq aceita: `audio/mpeg`, `audio/mp3`, `audio/mp
 `audio/x-m4a`, `audio/m4a`, `audio/wav`, `audio/x-wav`, `audio/wave`, `audio/ogg`,
 `audio/webm`, `audio/flac`, `audio/x-flac`, `video/mp4`, `video/webm`.
 
+**O tipo é decidido pelos bytes, não pelo cabeçalho.** O `Content-Type` de um upload é
+escolhido por quem envia: o navegador o deduz da extensão, então um `.txt` renomeado para
+`.mp3` chega anunciado como `audio/mpeg`. A validação tem dois estágios:
+
+1. O `fileFilter` do multer barra o que se **declara** como outra coisa (`text/plain`,
+   `application/pdf`) antes de ler o corpo. Tipos genéricos — `application/octet-stream`,
+   que é o que o `curl` envia — passam para o estágio seguinte
+2. O serviço lê a assinatura dos primeiros bytes (`audio-signature.ts`): `ID3` ou o *frame
+   sync* `0xFF Ex` do MPEG, `RIFF`/`WAVE`, `OggS`, `fLaC`, `ftyp`, o EBML `0x1A45DFA3`. O
+   que não tem assinatura de áudio recebe **400** — **antes** de qualquer chamada à Groq,
+   que é paga
+
 Tamanho máximo: `MAX_UPLOAD_MB`, default **25 MB**, o limite da camada gratuita da Groq.
 
 **11 · `PATCH /api/users/:id`** devolve `200 UserResponse`.
@@ -341,7 +353,7 @@ O envio de um áudio atravessa todas as camadas e serve de exemplo para as demai
 | 3 | Vite | O proxy repassa `POST /api/transcriptions` para `http://127.0.0.1:3000` |
 | 4 | `JwtAuthGuard` | O NestJS valida o token; se inválido ou ausente, responde **401** e a requisição termina aqui |
 | 5 | `transcriptions.controller.ts` | O controlador recebe o arquivo, o multer aplica o limite de tamanho (**413**) e o filtro de tipo (**400**), e chama o serviço |
-| 6 | `transcriptions.service.ts` | O serviço envia o áudio ao provedor com a chave lida do `.env` e recebe o texto; falha do provedor vira **502** |
+| 6 | `transcriptions.service.ts` | O serviço confere a assinatura dos bytes — o que não é áudio para em **400** aqui — e envia o arquivo ao provedor com a chave lida do `.env`; falha do provedor vira **502** |
 | 7 | TypeORM | Grava a transcrição no PostgreSQL, associada ao usuário do token |
 | 8 | Resposta | O backend devolve **201** com a transcrição em JSON; a tela a exibe e o TanStack Query invalida o histórico, que se atualiza sem recarregar a página |
 
@@ -480,7 +492,8 @@ grep -rn "from 'typeorm'" backend/src --include=*.controller.ts       # esperado
 | Login com senha errada | `401` |
 | Qualquer rota protegida sem `Authorization` | `401` |
 | Usuário comum em `GET /api/users` | `403` |
-| Upload de um `.txt` renomeado para `.mp3` | `400` |
+| Upload de um `.txt` renomeado para `.mp3`, **com `Content-Type: audio/mpeg`** | `400` |
+| Upload de um `.mp3` de verdade **sem `Content-Type`** (o que o `curl` manda) | `201` |
 | Upload de arquivo acima de `MAX_UPLOAD_MB` | `413` |
 | `TRANSCRIPTION_PROVIDER=groq` com chave inválida | `502` |
 

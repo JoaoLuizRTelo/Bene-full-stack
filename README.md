@@ -222,6 +222,7 @@ instrumento de trabalho, nas seguintes etapas:
 | Frontend | Claude Code · Claude Opus 5 | Geração das telas React, do sistema visual em Tailwind v4, do cliente axios com os dois interceptadores, da sessão em Zustand e dos hooks de TanStack Query |
 | Scripts e documentação | Claude Code · Claude Opus 5 | `start`/`stop` em Bash e PowerShell, `docker-compose.yml` e este README |
 | Verificação | Claude Code · Claude Opus 5 | Execução dos critérios de aceite de cada etapa no terminal (curl, psql, `npm run build`, `npm run lint`) |
+| Revisão crítica final | Claude Code · Claude Opus 5 | Bateria completa de aceite com o banco e a API no ar, transcrição real pela Groq, passeio no navegador com a aba Rede, e a correção da falha descrita abaixo |
 
 Os critérios de aceite foram conferidos pela **saída dos comandos no terminal**, e não apenas
 pelo relato do agente. O conteúdo foi revisado, e a responsabilidade pelo que está publicado
@@ -236,3 +237,15 @@ agente foram verificados um a um, com os comandos da seção 11.1 da especifica�
    recurso existe
 4. Nenhum controlador importa de `typeorm`: regra de negócio e acesso ao banco ficam no
    serviço
+
+**Uma falha encontrada e corrigida na revisão.** O filtro de tipo do upload confiava no
+`Content-Type` declarado por quem envia. Como o navegador deduz esse cabeçalho da extensão
+do arquivo, um `.txt` renomeado para `.mp3` chegava anunciado como `audio/mpeg` e era
+**aceito** — o critério "arquivo não-áudio → 400" passava no `curl` apenas porque o `curl`
+manda `application/octet-stream`, ou seja, dava verde pelo motivo errado, e o mesmo filtro
+recusaria um `.mp3` legítimo enviado pela linha de comando.
+
+A correção lê a assinatura dos primeiros bytes do arquivo (`backend/src/transcriptions/
+audio-signature.ts`) no serviço, antes de qualquer chamada à Groq, que é paga. Os dois casos
+foram reconferidos no terminal: arquivo de texto com `Content-Type: audio/mpeg` → `400`;
+`.mp3` e `.wav` de verdade, com ou sem cabeçalho → `201`.
