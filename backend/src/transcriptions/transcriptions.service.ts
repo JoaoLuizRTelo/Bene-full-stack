@@ -3,14 +3,14 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Paginated, paginate } from '../common/dto/paginated-response.dto';
 import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
-import { detectarFormatoDeAudio } from './audio-signature';
+import { detectAudioFormat } from './audio-signature';
 import {
   TranscriptionResponse,
   toTranscriptionResponse,
 } from './dto/transcription-response.dto';
 import { Transcription } from './entities/transcription.entity';
 import { TranscriptionProvider } from './providers/transcription-provider';
-import { EXTENSOES_ACEITAS } from './transcriptions.constants';
+import { ACCEPTED_EXTENSIONS } from './transcriptions.constants';
 
 @Injectable()
 export class TranscriptionsService {
@@ -31,15 +31,15 @@ export class TranscriptionsService {
     // extensao, entao um .txt renomeado para .mp3 chega como audio/mpeg. A
     // assinatura nos primeiros bytes e que decide - e antes de qualquer
     // chamada ao provedor, que e paga.
-    const formato = detectarFormatoDeAudio(file.buffer);
+    const format = detectAudioFormat(file.buffer);
 
-    if (formato === null) {
+    if (format === null) {
       this.logger.warn(
         `Upload recusado: "${file.originalname}" chegou como ${file.mimetype} mas nao tem assinatura de audio`,
       );
 
       throw new BadRequestException(
-        `Esse arquivo nao parece ser um audio. Formatos aceitos: ${EXTENSOES_ACEITAS}.`,
+        `Esse arquivo nao parece ser um audio. Formatos aceitos: ${ACCEPTED_EXTENSIONS}.`,
       );
     }
 

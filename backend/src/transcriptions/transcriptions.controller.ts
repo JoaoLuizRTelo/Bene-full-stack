@@ -22,7 +22,7 @@ import { PaginationQueryDto } from '../common/dto/pagination-query.dto';
 import { AuthenticatedUser } from '../common/interfaces/authenticated-user.interface';
 import { CreateTranscriptionDto } from './dto/create-transcription.dto';
 import { TranscriptionResponse } from './dto/transcription-response.dto';
-import { EXTENSOES_ACEITAS } from './transcriptions.constants';
+import { ACCEPTED_EXTENSIONS } from './transcriptions.constants';
 import { TranscriptionsService } from './transcriptions.service';
 
 /**
@@ -58,7 +58,7 @@ export class TranscriptionsController {
   ): Promise<TranscriptionResponse> {
     if (!file) {
       throw new BadRequestException(
-        `Envie um arquivo de audio no campo "file". Formatos aceitos: ${EXTENSOES_ACEITAS}.`,
+        `Envie um arquivo de audio no campo "file". Formatos aceitos: ${ACCEPTED_EXTENSIONS}.`,
       );
     }
 

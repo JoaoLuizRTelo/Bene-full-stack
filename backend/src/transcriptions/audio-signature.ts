@@ -13,13 +13,13 @@
  */
 
 /** Um formato reconhecido pela assinatura, ou `null` se nenhuma bateu. */
-export type FormatoDeAudio = 'mp3' | 'wav' | 'ogg' | 'flac' | 'mp4' | 'webm';
+export type AudioFormat = 'mp3' | 'wav' | 'ogg' | 'flac' | 'mp4' | 'webm';
 
-/** `true` se os bytes de `buffer` na posicao `offset` sao o texto ASCII `assinatura`. */
-function comecaCom(buffer: Buffer, assinatura: string, offset = 0): boolean {
+/** `true` se os bytes de `buffer` na posicao `offset` sao o texto ASCII `signature`. */
+function startsWith(buffer: Buffer, signature: string, offset = 0): boolean {
   return (
-    buffer.length >= offset + assinatura.length &&
-    buffer.toString('latin1', offset, offset + assinatura.length) === assinatura
+    buffer.length >= offset + signature.length &&
+    buffer.toString('latin1', offset, offset + signature.length) === signature
   );
 }
 
@@ -27,7 +27,7 @@ function comecaCom(buffer: Buffer, assinatura: string, offset = 0): boolean {
  * Um quadro de MPEG audio comeca com 11 bits ligados (o "frame sync").
  * Em bytes: 0xFF seguido de um byte cujos tres bits mais altos sao 1.
  */
-function temFrameSyncMpeg(buffer: Buffer, offset: number): boolean {
+function hasMpegFrameSync(buffer: Buffer, offset: number): boolean {
   return (
     buffer.length >= offset + 2 &&
     buffer[offset] === 0xff &&
@@ -40,26 +40,26 @@ function temFrameSyncMpeg(buffer: Buffer, offset: number): boolean {
  * assinatura conhecida aparece - e ai o arquivo nao e audio, qualquer que
  * seja a extensao ou o Content-Type.
  */
-export function detectarFormatoDeAudio(buffer: Buffer): FormatoDeAudio | null {
+export function detectAudioFormat(buffer: Buffer): AudioFormat | null {
   if (buffer.length < 12) {
     return null;
   }
 
   // RIFF....WAVE - o tamanho fica entre as duas marcas, por isso o offset 8.
-  if (comecaCom(buffer, 'RIFF') && comecaCom(buffer, 'WAVE', 8)) {
+  if (startsWith(buffer, 'RIFF') && startsWith(buffer, 'WAVE', 8)) {
     return 'wav';
   }
 
-  if (comecaCom(buffer, 'OggS')) {
+  if (startsWith(buffer, 'OggS')) {
     return 'ogg';
   }
 
-  if (comecaCom(buffer, 'fLaC')) {
+  if (startsWith(buffer, 'fLaC')) {
     return 'flac';
   }
 
   // ISO BMFF (mp4, m4a): o primeiro box e o ftyp, logo apos o tamanho.
-  if (comecaCom(buffer, 'ftyp', 4)) {
+  if (startsWith(buffer, 'ftyp', 4)) {
     return 'mp4';
   }
 
@@ -69,14 +69,14 @@ export function detectarFormatoDeAudio(buffer: Buffer): FormatoDeAudio | null {
   }
 
   // MP3 com tag ID3 na frente: "ID3" e, depois dela, os quadros.
-  if (comecaCom(buffer, 'ID3')) {
+  if (startsWith(buffer, 'ID3')) {
     return 'mp3';
   }
 
   // MP3 sem tag: o arquivo abre direto num quadro. Alguns gravadores deixam
   // bytes de preenchimento antes do primeiro, por isso a varredura curta.
   for (let offset = 0; offset < Math.min(buffer.length - 1, 1024); offset++) {
-    if (temFrameSyncMpeg(buffer, offset)) {
+    if (hasMpegFrameSync(buffer, offset)) {
       return 'mp3';
     }
   }

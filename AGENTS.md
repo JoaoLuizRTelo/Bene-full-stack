@@ -74,8 +74,20 @@ chamada HTTP passa por `services/api.ts`. Tipos do contrato da API em `types/`.
 - **Zustand** (`store/authStore.ts`) guarda dados que pertencem ao navegador: só a sessão
   (`user` e `accessToken`), persistida no `localStorage`
 
-**Nomes.** Código, identificadores, tipos e nomes de arquivo em inglês. Texto visível ao
-usuário, mensagens de erro da interface e documentação em português.
+**Nomes.** O idioma muda conforme a camada, e a divisa é o contrato da API:
+
+- **Backend** — tudo em inglês: arquivos, classes, métodos, variáveis, constantes
+- **Contrato da API** — em inglês dos dois lados. Os campos do JSON (`accessToken`,
+  `originalFilename`) e os tipos que os descrevem em `frontend/src/types/` têm o mesmo nome
+  no backend e no frontend, porque são a mesma coisa; traduzir um dos lados obrigaria a um
+  mapa de tradução no meio
+- **Frontend, fora do contrato** — em português: páginas (`TranscreverPage`), componentes
+  (`Botao`, `Campo`), hooks (`useTranscricoes`), rotas (`RotaProtegida`) e os caminhos que
+  aparecem na barra de endereço (`/entrar`, `/app/contas`), que o usuário lê
+
+**Texto visível ao usuário, mensagens de erro da interface e documentação em português** —
+e português leva acento: `Você`, `transcrição`, `histórico`. Comentários de código seguem o
+que já está no arquivo: português sem acento, para não depender da codificação do editor.
 
 **Commits.** Um commit por etapa da especificação, com mensagem que nomeia a etapa.
 

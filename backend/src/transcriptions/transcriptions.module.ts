@@ -9,9 +9,9 @@ import { GroqTranscriptionProvider } from './providers/groq-transcription.provid
 import { MockTranscriptionProvider } from './providers/mock-transcription.provider';
 import { TranscriptionProvider } from './providers/transcription-provider';
 import {
-  EXTENSOES_ACEITAS,
-  MIME_TYPES_ACEITOS,
-  MIME_TYPES_AMBIGUOS,
+  ACCEPTED_EXTENSIONS,
+  ACCEPTED_MIME_TYPES,
+  AMBIGUOUS_MIME_TYPES,
 } from './transcriptions.constants';
 import { TranscriptionsController } from './transcriptions.controller';
 import { TranscriptionsService } from './transcriptions.service';
@@ -39,18 +39,18 @@ import { TranscriptionsService } from './transcriptions.service';
           file: Express.Multer.File,
           callback: (error: Error | null, accept: boolean) => void,
         ) => {
-          const declarado = file.mimetype ?? '';
-          const aceito =
-            (MIME_TYPES_ACEITOS as readonly string[]).includes(declarado) ||
-            (MIME_TYPES_AMBIGUOS as readonly string[]).includes(declarado);
+          const declared = file.mimetype ?? '';
+          const accepted =
+            (ACCEPTED_MIME_TYPES as readonly string[]).includes(declared) ||
+            (AMBIGUOUS_MIME_TYPES as readonly string[]).includes(declared);
 
           callback(
-            aceito
+            accepted
               ? null
               : new BadRequestException(
-                  `Esse arquivo nao parece ser um audio (${declarado}). Formatos aceitos: ${EXTENSOES_ACEITAS}.`,
+                  `Esse arquivo nao parece ser um audio (${declared}). Formatos aceitos: ${ACCEPTED_EXTENSIONS}.`,
                 ),
-            aceito,
+            accepted,
           );
         },
       }),

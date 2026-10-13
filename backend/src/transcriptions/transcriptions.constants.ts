@@ -1,5 +1,5 @@
 /** Tipos que a Groq aceita no endpoint de transcricao. */
-export const MIME_TYPES_ACEITOS = [
+export const ACCEPTED_MIME_TYPES = [
   'audio/mpeg',
   'audio/mp3',
   'audio/mp4',
@@ -22,10 +22,10 @@ export const MIME_TYPES_ACEITOS = [
  * clientes mandam um campo vazio. Eles passam pelo filtro do Multer e sao
  * decididos pela assinatura dos bytes, no servico.
  */
-export const MIME_TYPES_AMBIGUOS = [
+export const AMBIGUOUS_MIME_TYPES = [
   'application/octet-stream',
   'binary/octet-stream',
   '',
 ] as const;
 
-export const EXTENSOES_ACEITAS = 'mp3, m4a, wav, ogg, webm, flac, mp4 e mpeg';
+export const ACCEPTED_EXTENSIONS = 'mp3, m4a, wav, ogg, webm, flac, mp4 e mpeg';
