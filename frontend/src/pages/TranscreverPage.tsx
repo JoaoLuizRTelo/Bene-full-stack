@@ -59,12 +59,12 @@ export function TranscreverPage() {
     <div className="space-y-12">
       {/* ------------------------------------------------------- O envio */}
       <section>
-        <Rotulo>Novo audio</Rotulo>
+        <Rotulo>Novo áudio</Rotulo>
         <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           Envie um arquivo para transcrever
         </h1>
         <p className="mt-2 max-w-prose text-sm text-ink-soft">
-          Aceitamos {FORMATOS}, com ate {LIMITE_MB} MB. O arquivo nao fica guardado — so o
+          Aceitamos {FORMATOS}, com até {LIMITE_MB} MB. O arquivo não fica guardado — só o
           texto que voltar.
         </p>
 
@@ -98,16 +98,16 @@ export function TranscreverPage() {
             <>
               <span className="font-mono text-sm text-ink">{arquivo.name}</span>
               <span className="font-mono text-xs text-ink-faint">
-                {formatarTamanho(arquivo.size)} · {arquivo.type || 'tipo nao informado'}
+                {formatarTamanho(arquivo.size)} · {arquivo.type || 'tipo não informado'}
               </span>
             </>
           ) : (
             <>
               <span className="font-display text-base font-semibold text-ink">
-                Arraste o audio aqui ou clique para escolher
+                Arraste o áudio aqui ou clique para escolher
               </span>
               <span className="font-mono text-xs text-ink-faint">
-                Um arquivo por vez, ate {LIMITE_MB} MB
+                Um arquivo por vez, até {LIMITE_MB} MB
               </span>
             </>
           )}
@@ -116,7 +116,7 @@ export function TranscreverPage() {
         {acimaDoLimite && (
           <Aviso className="mt-4">
             Esse arquivo tem {formatarTamanho(arquivo.size)} e passa de {LIMITE_MB} MB.
-            Tente um audio mais curto.
+            Tente um áudio mais curto.
           </Aviso>
         )}
 
@@ -147,7 +147,7 @@ export function TranscreverPage() {
 
           {envio.isPending && (
             <span className="font-mono text-xs text-ink-faint">
-              Um audio longo pode levar um minuto. Nao feche a pagina.
+              Um áudio longo pode levar um minuto. Não feche a página.
             </span>
           )}
         </div>
@@ -193,21 +193,21 @@ export function TranscreverPage() {
       <section>
         <div className="flex items-end justify-between gap-4 border-b border-rule pb-3">
           <div>
-            <Rotulo>Historico</Rotulo>
+            <Rotulo>Histórico</Rotulo>
             <h2 className="mt-1 font-display text-xl font-bold tracking-tight text-ink">
-              Suas transcricoes
+              Suas transcrições
             </h2>
           </div>
 
           {historico.data && historico.data.total > 0 && (
             <span className="font-mono text-xs text-ink-faint">
               {historico.data.total}{' '}
-              {historico.data.total === 1 ? 'transcricao' : 'transcricoes'}
+              {historico.data.total === 1 ? 'transcrição' : 'transcrições'}
             </span>
           )}
         </div>
 
-        {historico.isPending && <Carregando texto="Buscando o seu historico" />}
+        {historico.isPending && <Carregando texto="Buscando o seu histórico" />}
 
         {historico.isError && (
           <Aviso className="mt-4">{mensagemDeErro(historico.error)}</Aviso>
@@ -215,10 +215,10 @@ export function TranscreverPage() {
 
         {historico.data?.items.length === 0 && (
           <Vazio
-            titulo="Nenhuma transcricao ainda"
+            titulo="Nenhuma transcrição ainda"
             icone={<Inbox aria-hidden className="size-6" />}
           >
-            Envie o primeiro audio ali acima. O texto aparece aqui e fica salvo na sua
+            Envie o primeiro áudio ali acima. O texto aparece aqui e fica salvo na sua
             conta.
           </Vazio>
         )}
@@ -252,7 +252,7 @@ export function TranscreverPage() {
 
                     <button
                       type="button"
-                      aria-label={`Excluir a transcricao de ${item.originalFilename}`}
+                      aria-label={`Excluir a transcrição de ${item.originalFilename}`}
                       disabled={exclusao.isPending}
                       onClick={() => exclusao.mutate(item.id)}
                       className="shrink-0 rounded-sheet p-2 text-ink-faint transition-colors hover:bg-correction-wash hover:text-correction disabled:opacity-50"
@@ -272,7 +272,7 @@ export function TranscreverPage() {
 
         {paginas > 1 && (
           <nav
-            aria-label="Paginas do historico"
+            aria-label="Páginas do histórico"
             className="mt-6 flex items-center justify-between border-t border-rule pt-4"
           >
             <Botao
@@ -285,7 +285,7 @@ export function TranscreverPage() {
             </Botao>
 
             <span className="font-mono text-xs text-ink-faint">
-              Pagina {pagina} de {paginas}
+              Página {pagina} de {paginas}
             </span>
 
             <Botao
@@ -294,7 +294,7 @@ export function TranscreverPage() {
               disabled={pagina >= paginas}
               onClick={() => setPagina((atual) => atual + 1)}
             >
-              Proxima
+              Próxima
             </Botao>
           </nav>
         )}

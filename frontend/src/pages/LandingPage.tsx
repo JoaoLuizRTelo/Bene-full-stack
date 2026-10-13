@@ -9,42 +9,42 @@ const FORMATOS = ['mp3', 'm4a', 'wav', 'ogg', 'webm', 'flac', 'mp4', 'mpeg'];
    e por isso ele e numerado. */
 const PERCURSO = [
   {
-    titulo: 'Voce envia o arquivo',
+    titulo: 'Você envia o arquivo',
     texto:
-      'Escolhe um audio de ate 25 MB na area interna. O arquivo sai do seu computador e nao fica guardado em lugar nenhum.',
+      'Escolhe um áudio de até 25 MB na área interna. O arquivo sai do seu computador e não fica guardado em lugar nenhum.',
   },
   {
-    titulo: 'A transcricao acontece no servidor',
+    titulo: 'A transcrição acontece no servidor',
     texto:
-      'O audio e enviado ao modelo de transcricao pela nossa API, com a credencial guardada no servidor. O seu navegador nunca ve essa chave.',
+      'O áudio é enviado ao modelo de transcrição pela nossa API, com a credencial guardada no servidor. O seu navegador nunca vê essa chave.',
   },
   {
-    titulo: 'O texto fica no seu historico',
+    titulo: 'O texto fica no seu histórico',
     texto:
-      'A transcricao e salva na sua conta, com o nome do arquivo, o tamanho e a data. So voce le, e voce apaga quando quiser.',
+      'A transcrição é salva na sua conta, com o nome do arquivo, o tamanho e a data. Só você lê, e você apaga quando quiser.',
   },
 ];
 
 const GARANTIAS = [
   {
     icone: FileAudio,
-    titulo: 'O audio nao e guardado',
-    texto: 'Ele atravessa a API em memoria e e descartado. Fica apenas o texto.',
+    titulo: 'O áudio não é guardado',
+    texto: 'Ele atravessa a API em memória e é descartado. Fica apenas o texto.',
   },
   {
     icone: Lock,
-    titulo: 'Historico fechado',
-    texto: 'Cada transcricao pertence a uma conta. Pedir a de outra pessoa nao devolve nada.',
+    titulo: 'Histórico fechado',
+    texto: 'Cada transcrição pertence a uma conta. Pedir a de outra pessoa não devolve nada.',
   },
   {
     icone: Trash2,
-    titulo: 'Exclusao definitiva',
-    texto: 'Apagar uma transcricao a remove do banco, sem copia e sem lixeira.',
+    titulo: 'Exclusão definitiva',
+    texto: 'Apagar uma transcrição a remove do banco, sem cópia e sem lixeira.',
   },
   {
     icone: KeyRound,
     titulo: 'Senha nunca em texto',
-    texto: 'Guardamos apenas o hash, e ele nao sai da nossa API em resposta nenhuma.',
+    texto: 'Guardamos apenas o hash, e ele não sai da nossa API em resposta nenhuma.',
   },
 ];
 
@@ -55,18 +55,18 @@ export function LandingPage() {
       <section className="mx-auto w-full max-w-6xl px-4 pt-10 pb-16 sm:px-6 lg:pt-20">
         <div className="grid items-center gap-10 lg:grid-cols-[1fr_minmax(0,27rem)] lg:gap-14">
           <div className="entra">
-            <Rotulo>Transcricao de audio</Rotulo>
+            <Rotulo>Transcrição de áudio</Rotulo>
 
             <h1 className="mt-4 font-display text-[clamp(2.5rem,8vw,4.25rem)] leading-[0.95] font-bold tracking-[-0.035em] text-ink">
-              Voce fala.
+              Você fala.
               <br />
               Ele escreve
               <span className="text-bic">.</span>
             </h1>
 
             <p className="mt-5 max-w-[46ch] text-lg leading-relaxed text-ink-soft">
-              Ditado transforma gravacao em texto. Entrevista, aula, reuniao, recado de
-              audio: envie o arquivo e leia o que foi dito, sem transcrever na mao.
+              Ditado transforma gravação em texto. Entrevista, aula, reunião, recado de
+              áudio: envie o arquivo e leia o que foi dito, sem transcrever na mão.
             </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
@@ -89,7 +89,7 @@ export function LandingPage() {
             <dl className="mt-10 flex flex-wrap gap-x-8 gap-y-3 border-t border-rule pt-5">
               <div>
                 <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ink-faint">
-                  Tamanho maximo
+                  Tamanho máximo
                 </dt>
                 <dd className="font-display text-base font-semibold text-ink">25 MB</dd>
               </div>
@@ -97,7 +97,7 @@ export function LandingPage() {
                 <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ink-faint">
                   Idioma
                 </dt>
-                <dd className="font-display text-base font-semibold text-ink">Portugues</dd>
+                <dd className="font-display text-base font-semibold text-ink">Português</dd>
               </div>
               <div>
                 <dt className="font-mono text-[0.6875rem] uppercase tracking-[0.14em] text-ink-faint">
@@ -124,7 +124,7 @@ export function LandingPage() {
           <header className="margem pl-5">
             <Rotulo>Como funciona</Rotulo>
             <h2 className="mt-3 max-w-[28ch] font-display text-3xl font-bold tracking-tight text-ink sm:text-4xl">
-              Tres passos, nessa ordem
+              Três passos, nessa ordem
             </h2>
           </header>
 
@@ -173,10 +173,10 @@ export function LandingPage() {
         <div className="mx-auto flex w-full max-w-6xl flex-col items-start gap-6 px-4 sm:px-6 md:flex-row md:items-center md:justify-between">
           <div>
             <h2 className="font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
-              Comece pelo primeiro audio
+              Comece pelo primeiro áudio
             </h2>
             <p className="mt-2 max-w-[48ch] text-ink-soft">
-              A conta e gratuita e leva um minuto. Depois disso, e arrastar o arquivo e ler.
+              A conta é gratuita e leva um minuto. Depois disso, é arrastar o arquivo e ler.
             </p>
           </div>
 

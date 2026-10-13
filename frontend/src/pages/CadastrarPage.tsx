@@ -23,7 +23,7 @@ const esquema = z
       .trim()
       .min(2, 'O nome precisa ter ao menos 2 caracteres')
       .max(120, 'O nome passa de 120 caracteres'),
-    email: z.string().min(1, 'Informe um e-mail').email('Esse e-mail nao parece valido'),
+    email: z.string().min(1, 'Informe um e-mail').email('Esse e-mail não parece válido'),
     password: z
       .string()
       .min(8, 'A senha precisa ter ao menos 8 caracteres')
@@ -32,7 +32,7 @@ const esquema = z
   })
   .refine((dados) => dados.password === dados.confirmacao, {
     path: ['confirmacao'],
-    message: 'As senhas nao sao iguais',
+    message: 'As senhas não são iguais',
   });
 
 type Formulario = z.infer<typeof esquema>;
@@ -64,8 +64,8 @@ export function CadastrarPage() {
     onError: (erro: unknown) => {
       // 409 e sobre o e-mail: o erro pertence aquele campo, nao ao formulario.
       const mensagem = mensagemDeErro(erro);
-      if (mensagem.includes('e-mail ja esta cadastrado')) {
-        setError('email', { message: 'Esse e-mail ja esta cadastrado' });
+      if (mensagem.includes('e-mail já está cadastrado')) {
+        setError('email', { message: 'Esse e-mail já está cadastrado' });
       }
     },
   });
@@ -82,7 +82,7 @@ export function CadastrarPage() {
       <p className="mt-2 text-ink-soft">
         Leva um minuto.{' '}
         <Link to="/entrar" className="font-medium text-bic underline-offset-2 hover:underline">
-          Ja tem conta?
+          Já tem conta?
         </Link>
       </p>
 
@@ -94,7 +94,7 @@ export function CadastrarPage() {
         <Campo
           rotulo="Nome"
           autoComplete="name"
-          placeholder="Como voce quer ser chamado"
+          placeholder="Como você quer ser chamado"
           erro={errors.name?.message}
           {...register('name')}
         />

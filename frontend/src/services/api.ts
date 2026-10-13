@@ -62,7 +62,7 @@ api.interceptors.response.use(
  * Os status vem do contrato (docs/ESPECIFICACAO.md, secao 4.4). A mensagem
  * explica o que aconteceu e o que fazer - nao pede desculpas e nao e vaga.
  */
-export function mensagemDeErro(erro: unknown, padrao = 'Nao foi possivel concluir.'): string {
+export function mensagemDeErro(erro: unknown, padrao = 'Não foi possível concluir.'): string {
   if (!axios.isAxiosError(erro)) {
     return padrao;
   }
@@ -70,22 +70,22 @@ export function mensagemDeErro(erro: unknown, padrao = 'Nao foi possivel conclui
   const resposta = (erro as AxiosError<ApiError>).response;
 
   if (!resposta) {
-    return 'A API nao respondeu. Confirme que o backend esta rodando na porta 3000.';
+    return 'A API não respondeu. Confirme que o backend está rodando na porta 3000.';
   }
 
   switch (resposta.status) {
     case 401:
       return 'E-mail ou senha incorretos.';
     case 403:
-      return 'Esta area e restrita a administradores.';
+      return 'Esta área é restrita a administradores.';
     case 404:
-      return 'Nao encontramos esse item.';
+      return 'Não encontramos esse item.';
     case 409:
-      return 'Esse e-mail ja esta cadastrado.';
+      return 'Esse e-mail já está cadastrado.';
     case 413:
-      return 'O arquivo passa de 25 MB. Tente um audio mais curto.';
+      return 'O arquivo passa de 25 MB. Tente um áudio mais curto.';
     case 502:
-      return 'O servico de transcricao nao respondeu. Tente de novo em instantes.';
+      return 'O serviço de transcrição não respondeu. Tente de novo em instantes.';
     default:
       break;
   }

@@ -22,13 +22,13 @@ export function ContasPage() {
   return (
     <div className="space-y-6">
       <header>
-        <Rotulo>Administracao</Rotulo>
+        <Rotulo>Administração</Rotulo>
         <h1 className="mt-2 font-display text-2xl font-bold tracking-tight text-ink sm:text-3xl">
           Contas
         </h1>
         <p className="mt-2 max-w-prose text-sm text-ink-soft">
-          Promova, desative ou exclua contas. Excluir uma conta apaga as transcricoes dela.
-          A sua propria conta nao pode ser rebaixada nem excluida aqui.
+          Promova, desative ou exclua contas. Excluir uma conta apaga as transcrições dela.
+          A sua própria conta não pode ser rebaixada nem excluída aqui.
         </p>
       </header>
 
@@ -65,7 +65,7 @@ export function ContasPage() {
         <Vazio titulo="Nenhuma conta encontrada" icone={<UserRound aria-hidden className="size-6" />}>
           {busca
             ? `Nada corresponde a "${busca}". Limpe a busca para ver todas as contas.`
-            : 'Ainda nao ha contas cadastradas.'}
+            : 'Ainda não há contas cadastradas.'}
         </Vazio>
       )}
 
@@ -91,7 +91,7 @@ export function ContasPage() {
                         </Selo>
                       )}
                       {!conta.isActive && <Selo tom="correcao">desativada</Selo>}
-                      {souEu && <Selo tom="visto">voce</Selo>}
+                      {souEu && <Selo tom="visto">você</Selo>}
                     </div>
 
                     <p className="mt-0.5 truncate font-mono text-sm text-ink-soft">
@@ -115,7 +115,7 @@ export function ContasPage() {
                           })
                         }
                       >
-                        {conta.role === 'admin' ? 'Tornar usuario' : 'Tornar admin'}
+                        {conta.role === 'admin' ? 'Tornar usuário' : 'Tornar admin'}
                       </Botao>
 
                       <Botao
@@ -144,7 +144,7 @@ export function ContasPage() {
                               })
                             }
                           >
-                            Confirmar exclusao
+                            Confirmar exclusão
                           </Botao>
                           <Botao
                             type="button"
@@ -176,7 +176,7 @@ export function ContasPage() {
 
       {paginas > 1 && (
         <nav
-          aria-label="Paginas das contas"
+          aria-label="Páginas das contas"
           className="flex items-center justify-between border-t border-rule pt-4"
         >
           <Botao
@@ -189,7 +189,7 @@ export function ContasPage() {
           </Botao>
 
           <span className="font-mono text-xs text-ink-faint">
-            Pagina {pagina} de {paginas}
+            Página {pagina} de {paginas}
           </span>
 
           <Botao
@@ -198,7 +198,7 @@ export function ContasPage() {
             disabled={pagina >= paginas}
             onClick={() => setPagina((atual) => atual + 1)}
           >
-            Proxima
+            Próxima
           </Botao>
         </nav>
       )}

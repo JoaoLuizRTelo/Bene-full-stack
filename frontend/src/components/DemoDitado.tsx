@@ -12,7 +12,7 @@ import { useEffect, useReducer, useState } from 'react';
  */
 
 const FALA =
-  'Ata da reuniao de terca: o prazo do relatorio passou para o dia vinte, e a Marina ficou responsavel por fechar os numeros ate sexta.';
+  'Ata da reunião de terça: o prazo do relatório passou para o dia vinte, e a Marina ficou responsável por fechar os números até sexta.';
 
 /** Alturas fixas: a onda e sempre a mesma, para a demo ser reproduzivel. */
 const ONDA = [
@@ -82,7 +82,7 @@ function Linha({ aoTerminar }: { aoTerminar: () => void }) {
         <div
           className="flex h-16 items-end gap-[3px]"
           role="img"
-          aria-label="Forma de onda do audio sendo percorrida"
+          aria-label="Forma de onda do áudio sendo percorrida"
         >
           {ONDA.map((altura, indice) => {
             const percorrido = indice / ONDA.length <= progresso;

@@ -9,7 +9,7 @@ import { useAuthStore } from '../store/authStore';
 import type { AuthResponse } from '../types/api';
 
 const esquema = z.object({
-  email: z.string().min(1, 'Informe o seu e-mail').email('Esse e-mail nao parece valido'),
+  email: z.string().min(1, 'Informe o seu e-mail').email('Esse e-mail não parece válido'),
   password: z.string().min(1, 'Informe a sua senha'),
 });
 
@@ -48,15 +48,15 @@ export function EntrarPage() {
         Entrar na sua conta
       </h1>
       <p className="mt-2 text-ink-soft">
-        Use o e-mail e a senha que voce cadastrou.{' '}
+        Use o e-mail e a senha que você cadastrou.{' '}
         <Link to="/cadastrar" className="font-medium text-bic underline-offset-2 hover:underline">
-          Nao tem conta?
+          Não tem conta?
         </Link>
       </p>
 
       {sessaoExpirou && (
         <Aviso tom="tinta" className="mt-6">
-          A sua sessao expirou. Entre de novo para continuar.
+          A sua sessão expirou. Entre de novo para continuar.
         </Aviso>
       )}
 

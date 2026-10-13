@@ -50,7 +50,7 @@ export function LayoutApp() {
         </div>
 
         <nav
-          aria-label="Secoes do painel"
+          aria-label="Seções do painel"
           className="mx-auto w-full max-w-5xl px-4 sm:px-6"
         >
           <div className="flex items-center gap-6">
@@ -74,7 +74,7 @@ export function LayoutApp() {
 
       <footer className="border-t border-rule">
         <p className="mx-auto w-full max-w-5xl px-4 py-5 font-mono text-xs text-ink-faint sm:px-6">
-          Nenhum audio enviado fica armazenado. Apenas o texto transcrito.
+          Nenhum áudio enviado fica armazenado. Apenas o texto transcrito.
         </p>
       </footer>
     </div>

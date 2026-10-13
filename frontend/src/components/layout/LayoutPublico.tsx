@@ -47,10 +47,10 @@ export function LayoutPublico() {
       <footer className="border-t border-rule bg-paper-sunken">
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-4 py-8 text-sm text-ink-faint sm:flex-row sm:items-center sm:justify-between sm:px-6">
           <p className="font-mono text-xs">
-            Ditado — projeto academico de Topicos Especiais em Programacao, UNEMAT Sinop.
+            Ditado — projeto acadêmico de Tópicos Especiais em Programação, UNEMAT Sinop.
           </p>
           <p className="font-mono text-xs">
-            Transcricao por modelo Whisper. Nenhum audio e armazenado.
+            Transcrição por modelo Whisper. Nenhum áudio é armazenado.
           </p>
         </div>
       </footer>

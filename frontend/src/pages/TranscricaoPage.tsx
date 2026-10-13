@@ -22,7 +22,7 @@ export function TranscricaoPage() {
   }
 
   if (consulta.isPending) {
-    return <Carregando texto="Abrindo a transcricao" />;
+    return <Carregando texto="Abrindo a transcrição" />;
   }
 
   if (consulta.isError) {
@@ -34,7 +34,7 @@ export function TranscricaoPage() {
           className="inline-flex items-center gap-1.5 font-display text-sm font-semibold text-bic hover:underline"
         >
           <ArrowLeft aria-hidden className="size-4" />
-          Voltar ao historico
+          Voltar ao histórico
         </Link>
       </div>
     );
@@ -51,11 +51,11 @@ export function TranscricaoPage() {
         className="inline-flex items-center gap-1.5 font-display text-sm font-semibold text-ink-soft transition-colors hover:text-bic"
       >
         <ArrowLeft aria-hidden className="size-4" />
-        Historico
+        Histórico
       </Link>
 
       <header>
-        <Rotulo>Transcricao</Rotulo>
+        <Rotulo>Transcrição</Rotulo>
         <h1 className="mt-2 font-display text-2xl font-bold tracking-tight break-words text-ink sm:text-3xl">
           {transcricao.originalFilename}
         </h1>
@@ -71,7 +71,7 @@ export function TranscricaoPage() {
           </div>
           {duracao && (
             <div className="flex gap-1.5">
-              <dt>duracao</dt>
+              <dt>duração</dt>
               <dd className="text-ink-soft">{duracao}</dd>
             </div>
           )}
@@ -125,7 +125,7 @@ export function TranscricaoPage() {
         {confirmando ? (
           <div className="flex flex-wrap items-center gap-3">
             <p className="text-sm text-ink">
-              Apagar esta transcricao em definitivo? Nao ha como recuperar.
+              Apagar esta transcrição em definitivo? Não há como recuperar.
             </p>
             <Botao
               type="button"
@@ -146,7 +146,7 @@ export function TranscricaoPage() {
         ) : (
           <Botao type="button" variante="correcao" onClick={() => setConfirmando(true)}>
             <Trash2 aria-hidden className="size-4" />
-            Apagar transcricao
+            Apagar transcrição
           </Botao>
         )}
 
