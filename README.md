@@ -196,6 +196,33 @@ A API vive sob `/api`: `auth/register`, `auth/login`, `auth/me`, `transcriptions
 `health`. O contrato completo, rota por rota e status por status, está na seção 4 da
 especificação.
 
+## Mapa das etapas e verificação
+
+A aplicação foi construída na ordem do plano de etapas (seção 10 da especificação), e cada
+etapa só avançou depois que os critérios de aceite dela passaram **no terminal**. Os commits,
+porém, saíram agrupados: `Etapas 1 a 5` num e `Etapas 6 a 9` noutro, em vez de um por etapa
+como o `AGENTS.md` pede. A tabela abaixo dá a rastreabilidade que o commit por etapa daria —
+o que cada etapa produziu, o critério e a saída conferida.
+
+Toda a bateria foi reexecutada do zero em **13/10/2026**, com o banco, a API e o Vite no ar.
+
+| # | O que produziu | Critério | Saída conferida |
+|---|---|---|---|
+| 0 | `.gitignore`, `docker-compose.yml`, `AGENTS.md`, especificação | Banco no ar, porta só no loopback | `PostgreSQL 17.11` · `PORTS 127.0.0.1:5432->5432/tcp` |
+| 1 | NestJS, `ConfigModule` validado, TypeORM, `ValidationPipe`, `/api/health` | `200` com o banco de pé | `{"status":"ok","database":"up"}` |
+| 2 | Módulo `users`: entidade, serviço, `toUserResponse()`, rotas de admin | Tabela criada; rota sem token **401** | tabela `users` consultada no `psql` · `401` |
+| 3 | Módulo `auth`: cadastro, login, `/me`, JWT, `RolesGuard`, `seed:admin` | `201`+token; repetido `409`; `role` no corpo `400`; comum em `/users` `403`; nenhum `passwordHash` | `201` · `409` · `400` · `403` · `grep -ci passwordHash` = **0** · seed: "Conta admin@ditado.dev promovida a administrador" |
+| 4 | Módulo `transcriptions` com provedor `mock` | Upload `201`; lista só do dono; id alheio `404`; não-áudio `400`; acima do limite `413`; `DELETE` `204` | `201` · Ana `total=2`, Bruno `total=0` · `404` · `400` · `413` · `204` |
+| 5 | `GroqTranscriptionProvider` | Chave inválida `502`; chave válida transcreve o áudio de teste | `502` · `audio_teste.mp3`, 35,85 s, `whisper-large-v3-turbo`, texto correto com pontuação e acentuação |
+| 6 | Frontend: Vite, Tailwind v4, rotas, axios com os dois interceptadores, Zustand, TanStack Query | Landing abre; cadastro e login funcionam; sessão sobrevive ao recarregar; `/app` sem sessão vai a `/entrar`; nenhuma chamada a `localhost:3000` | percorrido no navegador · aba Rede: `GET localhost:5173/api/users` `200`, **zero** requisições à 3000 |
+| 7 | Área interna: envio, histórico paginado, detalhe, exclusão | Enviar exibe o texto e o histórico se atualiza sem recarregar; excluir remove; `401` leva a `/entrar` | upload pela tela `201` · histórico 0 → 1 → 0 sem recarregar · token corrompido → `/entrar?expirou=1` |
+| 8 | Área de administrador | Admin lista e altera contas; usuário comum é barrado pela tela **e** recebe `403` | desativar/reativar refletiram na hora · `/app/contas` como usuário comum → redirecionado a `/app` · API `403` |
+| 9 | `start`/`stop`, README, revisão crítica final | `build` e `lint` nos dois projetos; comandos da seção 11 conferem | 4/4 passam · seção 11.1 e 11.2 conferidas uma a uma |
+
+Os comandos do "Rodar do zero" foram executados nesta máquina nesta ordem — `docker compose
+up -d`, `npm run seed:admin`, `npm run start:dev`, `npm run dev` — com as dependências já
+instaladas de antes.
+
 ## Problemas comuns
 
 | Sintoma | Causa e solução |
